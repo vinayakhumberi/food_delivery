@@ -1,22 +1,31 @@
-import { TEST } from '../constants/ActionTypes';
-import { menuRef } from "../config/firebase";
+import { FETCH_MENU, FETCH_MENU_SUCCESS } from '../constants/ActionTypes';
+// import { menuRef } from "../config/firebase";
 
 const initialState = {
-  testInfo: {
+  menuItems: {
     status: 0,
-    messages: 'Test info',
+    messages: '',
     data: {},
   },
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case TEST:
+    case FETCH_MENU:
       return {
         ...state,
-        testInfo: {
+        menuItems: {
           status: 1,
-          messages: 'requested',
+          messages: 'requesting',
+          data: {},
+        },
+      };
+    case FETCH_MENU_SUCCESS:
+      return {
+        ...state,
+        menuItems: {
+          status: 2,
+          messages: 'success',
           data: action.payload,
         },
       };

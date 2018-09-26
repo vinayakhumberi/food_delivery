@@ -78,16 +78,13 @@ class NavBar extends React.Component {
                   <Avatar>
                     <ImageIcon />
                   </Avatar>
-                  <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+                  <ListItemText primary="Bob Dylan" secondary="Jan 9, 2014" />
                 </ListItem>
               </List>
               <Divider />
               <List component="nav">
                 <ListItem button>
-                  <ListItemText primary="Trash" />
-                </ListItem>
-                <ListItem button component="a" href="#simple-list">
-                  <ListItemText primary="Spam" />
+                  <ListItemText primary="Helpline number" />
                 </ListItem>
               </List>
             </div>

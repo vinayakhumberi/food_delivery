@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -14,12 +13,20 @@ const styles = {
   body: {
     backgroundColor: '#F5F5F5',
     minHeight: '100vh',
-    paddingTop: '25%',
-    paddingBottom: '25%',
+    padding: '25% 0.5rem',
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gridGap: '1rem',
   },
   card: {
     maxWidth: '100%',
     margin: '10px',
+  },
+  cardTitle: {
+    fontSize: '1.25rem',
+  },
+  cardActionArea: {
+    width: '100%',
   },
   media: {
     height: 140,
@@ -27,6 +34,28 @@ const styles = {
   avatar: {
     margin: 8,
   },
+  button: {
+    margin: '1rem 0 1rem 1rem',
+  },
+  cardFooter: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    padding: '0 1rem',
+  },
+  tag: {
+    position: 'absolute',
+    top: '0.25rem',
+    left: '0',
+    color: '#fff',
+    padding: '0.25rem 0.75rem',
+    fontSize: '0.85rem',
+  },
+  green: {
+    backgroundColor: '#8bc34a',
+  },
+  black: {
+    backgroundColor: '#222222',
+  }
 };
 
 class HomeComponent extends React.Component {
@@ -40,98 +69,59 @@ class HomeComponent extends React.Component {
     this.setState({ value });
   }
   componentWillMount() {
-    this.props.testAction();
+    this.props.fetchMenu();
   }
   render() {
     const { classes } = this.props;
-    // console.log(this.props);
+    console.log(this.props);
+    const buildMenuCards = (menu) => {
+      const crudeHtml = menu.map((menuItem) => {
+        return (
+          <Zoom in={this.state.show} key={menuItem.id}>
+          <Card className={classes.card}>
+            {Object.keys(menuItem.tags).length && <div className={
+                `${classes.tag}   ${menuItem.tags.promo === 'Exclusive' && classes.green} ${menuItem.tags.promo === 'Select' && classes.black}`
+              }
+            >
+              {menuItem.tags.promo}
+            </div>}
+            <CardMedia
+              className={classes.media}
+              image={menuItem.img}
+              title={menuItem.img}
+            />
+            <CardContent>
+              <Typography className={classes.cardTitle} gutterBottom variant="headline" component="h2">
+                {menuItem.localName}
+              </Typography>
+              <Typography variant="caption" gutterBottom align="left">
+                {menuItem.category}
+              </Typography>
+            </CardContent>
+            <CardActions className={classes.cardFooter}>
+              <Typography color="primary" component="p">
+                ₹ {menuItem.price}
+                <strike>
+                  <Typography variant="caption" gutterBottom align="left">
+                    ₹ {menuItem.strikePrice}
+                  </Typography>
+                </strike>
+              </Typography>
+              <Button size="small" variant="outlined" className={classes.button}>
+                Add
+              </Button>
+            </CardActions>
+          </Card>
+        </Zoom>
+        );
+      });
+      return crudeHtml;
+    }
+    const cards = this.props.menuItems.status === 2 ? buildMenuCards(this.props.menuItems.data) : null;
     return (
       <div className={classes.root}>
         <div className={classes.body}>
-          <Zoom in={this.state.show} >
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image="img/sample.jpg"
-                title="Contemplative Reptile"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="headline" component="h2">
-                  Lizard
-                </Typography>
-                <Typography component="p">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                  across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                Share
-              </Button>
-              <Button size="small" color="primary">
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-          </Zoom>
-          <Zoom in={this.state.show} >
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image="img/sample.jpg"
-                title="Contemplative Reptile"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="headline" component="h2">
-                  Lizard
-                </Typography>
-                <Typography component="p">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                  across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                Share
-              </Button>
-              <Button size="small" color="primary">
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-          </Zoom>
-          <Zoom in={this.state.show} >
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardMedia
-                className={classes.media}
-                image="img/sample.jpg"
-                title="Contemplative Reptile"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="headline" component="h2">
-                  Lizard
-                </Typography>
-                <Typography component="p">
-                  Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                  across all continents except Antarctica
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                Share
-              </Button>
-              <Button size="small" color="primary">
-                Learn More
-              </Button>
-            </CardActions>
-          </Card>
-          </Zoom>
+          {cards}
         </div>
       </div>
     );
@@ -140,8 +130,8 @@ class HomeComponent extends React.Component {
 
 HomeComponent.propTypes = {
   classes: PropTypes.object.isRequired,
-  testAction: PropTypes.func.isRequired,
-  testInfo: PropTypes.shape().isRequired,
+  fetchMenu: PropTypes.func.isRequired,
+  menuItems: PropTypes.shape().isRequired,
 };
 
 export default withStyles(styles)(HomeComponent);

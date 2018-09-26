@@ -1,24 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import CartComponent from '../components/CartComponent';
-import { testAction } from '../actions/HomeActions';
+import { fetchMenu } from '../actions/HomeActions';
 import BottomNav from '../components/BottomNav';
+import NavBar from '../components/NavBar';
 
 
 const CartContainer = props => (
 	<div>
-	<CartComponent {...props} />
-	<BottomNav {...props} />
+		<NavBar {...props} />
+		<CartComponent {...props} />
+		<BottomNav {...props} />
 	</div>
 );
 
 
 const mapStateToProps = state => ({
-  testInfo: state.home.testInfo,
+  menuItems: state.home.menuItems,
 });
 
 
 
 export default connect(mapStateToProps, {
-  testAction,
+  fetchMenu,
 })(CartContainer);

@@ -6,6 +6,7 @@ import StarIcon from '@material-ui/icons/Star';
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Badge from '@material-ui/core/Badge';
 
 const styles = {
   stickToBottom: {
@@ -80,13 +81,13 @@ class BottomNav extends React.Component {
 	          		this.props.history.push('/home');
 	          	}}
 	          />
-	          <BottomNavigationAction
-	          	label="Cart"
-	          	icon={<ShoppingCartIcon />}
-	          	onClick={() => {
-	          		this.props.history.push('/cart');
-	          	}}
-	          />
+						<BottomNavigationAction
+							label="Cart"
+							icon={<Badge badgeContent={0} color="primary" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge>}
+							onClick={() => {
+								this.props.history.push('/cart');
+							}}
+						/>
 	          <BottomNavigationAction
 	          	label="Account"
 	          	icon={<AccountCircleIcon />}
