@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import { withStyles } from '@material-ui/core/styles';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -60,6 +62,9 @@ class BottomNav extends React.Component {
 	}
 	render() {
 		const { classes } = this.props;
+		const cartCount = _.reduce(this.props.cart, (sum, item) => {
+			return sum + (item.quantity || 0);
+		}, 0);
 		return(
 			<BottomNavigation
 	          value={this.state.selected}
@@ -83,7 +88,7 @@ class BottomNav extends React.Component {
 	          />
 						<BottomNavigationAction
 							label="Cart"
-							icon={<Badge badgeContent={0} color="primary" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge>}
+							icon={<Badge badgeContent={cartCount} color="success" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge>}
 							onClick={() => {
 								this.props.history.push('/cart');
 							}}
@@ -99,5 +104,9 @@ class BottomNav extends React.Component {
 		);
 	}
 }
+
+BottomNav.propTypes = {
+  cart: PropTypes.array.isRequired,
+};
 
 export default withStyles(styles)(BottomNav);

@@ -5,16 +5,23 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import store from './store';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+// import deepOrange from '@material-ui/core/colors/deepOrange';
 import AppRoutes from './routes';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: deepOrange[500],
+      main: '#2196f3',
       contrastText: '#ffffff',
     },
-    secondary: { main: '#11cb5f' },
+    secondary: {
+      main: '#11cb5f',
+      contrastText: '#222222',
+    },
+    success: {
+      main: '#8bc34a',
+      contrastText: '#222222',
+    },
   },
 });
 

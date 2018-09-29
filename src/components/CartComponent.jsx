@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,6 +8,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -17,58 +20,124 @@ const styles = theme => ({
   body: {
     backgroundColor: '#F5F5F5',
     minHeight: '100vh',
-    paddingTop: '25%',
-    paddingBottom: '25%',
+    padding: '25% 0.5rem',
+  },
+  cell: {
+    padding: '1rem',
+  },
+  textFieldContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    margin: '2rem 0',
+  },
+  textField: {
+    margin: '2rem 1rem',
+  },
+  button: {
+    margin: '2rem 0',
+    width: '100%',
+    padding: '1rem',
   },
 });
-
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-class HomeComponent extends React.Component {
+class CartComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      comments: '',
+    };
+    this.handleCommentChange = this.handleCommentChange.bind(this);
+  }
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+  handleCommentChange(event){
+    this.setState({
+      comments: event.target.value,
+    });
+  };
   render () {
     const { classes } = this.props;
+    const cartTotal = _.reduce(this.props.cart, (sum, item) => {
+			return sum + (item.price || 0);
+		}, 0);
     return(
       <div className={classes.body}>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Dessert (100g serving)</TableCell>
-                <TableCell numeric>Calories</TableCell>
+                <TableCell className={classes.cell} >Item</TableCell>
+                <TableCell className={classes.cell} numeric>(Qty)</TableCell>
+                <TableCell className={classes.cell} numeric>Price</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => {
+              {this.props.cart.map(row => {
                 return (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">
-                      {row.name}
+                  <TableRow key={row.foodId}>
+                    <TableCell className={classes.cell}>
+                      {row.foodName}
                     </TableCell>
-                    <TableCell numeric>{row.calories}</TableCell>
+                    <TableCell className={classes.cell} numeric>{row.quantity}</TableCell>
+                    <TableCell className={classes.cell} numeric>{row.price}</TableCell>
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
         </Paper>
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  CGST
+                </TableCell>
+                <TableCell numeric>Rs. 20</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  SGST
+                </TableCell>
+                <TableCell numeric>Rs. 20</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  TOTAL
+                </TableCell>
+                <TableCell numeric>Rs. {cartTotal}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
+        <div className={classes.textFieldContainer}>
+          <TextField
+            id="outlined-full-width"
+            label="Add instructions!"
+            style={{ margin: 8 }}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            color={'#222222'}
+            value={this.state.comments}
+            onChange={this.handleCommentChange}
+          />
+        </div>
+        <div>
+          <Button variant="contained" color="primary" className={classes.button}>
+            Place order
+          </Button>
+        </div>
       </div>
     );
   }
 }
 
-HomeComponent.propTypes = {
+CartComponent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(HomeComponent);
+export default withStyles(styles)(CartComponent);

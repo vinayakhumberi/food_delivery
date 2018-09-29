@@ -16,7 +16,8 @@ const CartContainer = props => (
 
 
 const mapStateToProps = state => ({
-  menuItems: state.home.menuItems,
+	menuItems: state.home.menuItems,
+	cart: state.cart.cart,
 });
 
 

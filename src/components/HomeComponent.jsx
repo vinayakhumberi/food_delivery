@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -55,7 +56,13 @@ const styles = {
   },
   black: {
     backgroundColor: '#222222',
-  }
+  },
+  disable: {
+    opacity: 0.6,
+    after: {
+      content: 'sas',
+    }
+  },
 };
 
 class HomeComponent extends React.Component {
@@ -63,22 +70,50 @@ class HomeComponent extends React.Component {
     super();
     this.state = {
       show: true,
+      handBag: [],
     };
-  }
-  handleChange = (event, value) => {
-    this.setState({ value });
+    this.handleCartChanges = this.handleCartChanges.bind(this);
   }
   componentWillMount() {
     this.props.fetchMenu();
   }
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.cart);
+  }
+  handleCartChanges(event) {
+    const foodId = event.currentTarget.getAttribute('data-id');
+    const foodName = event.currentTarget.getAttribute('data-name');
+    const itemPrice = parseInt(event.currentTarget.getAttribute('data-price'), 10);
+    const cart = this.props.cart.slice(0);
+    const cartItem = _.find(cart, ['foodId', foodId]);
+    if (cartItem) {
+      _.forEach(cart, function(item) {
+        if (item.foodId === foodId) {
+          item.quantity = item.quantity + 1;
+          item.price = item.quantity * itemPrice;
+        }
+      });
+    } else {
+      cart.push({
+        foodId,
+        foodName,
+        quantity: 1,
+        price: itemPrice,
+      });
+    }
+    this.props.updateCart(cart);
+  }
   render() {
     const { classes } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     const buildMenuCards = (menu) => {
       const crudeHtml = menu.map((menuItem) => {
         return (
           <Zoom in={this.state.show} key={menuItem.id}>
-          <Card className={classes.card}>
+          <Card className={`${classes.card} ${menuItem.available ? '' : classes.disable}`}>
             {Object.keys(menuItem.tags).length && <div className={
                 `${classes.tag}   ${menuItem.tags.promo === 'Exclusive' && classes.green} ${menuItem.tags.promo === 'Select' && classes.black}`
               }
@@ -107,7 +142,15 @@ class HomeComponent extends React.Component {
                   </Typography>
                 </strike>
               </Typography>
-              <Button size="small" variant="outlined" className={classes.button}>
+              <Button
+                size="small"
+                variant="outlined"
+                className={classes.button}
+                onClick={this.handleCartChanges}
+                data-id={menuItem.id}
+                data-price={menuItem.price}
+                data-name={menuItem.localName}
+              >
                 Add
               </Button>
             </CardActions>
@@ -132,6 +175,8 @@ HomeComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   fetchMenu: PropTypes.func.isRequired,
   menuItems: PropTypes.shape().isRequired,
+  updateCart: PropTypes.func.isRequired,
+  cart: PropTypes.array.isRequired,
 };
 
 export default withStyles(styles)(HomeComponent);
