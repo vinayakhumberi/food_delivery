@@ -9,6 +9,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Zoom from '@material-ui/core/Zoom';
+import RemoveIcon from '@material-ui/icons/Remove';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = {
   body: {
@@ -36,7 +39,17 @@ const styles = {
     margin: 8,
   },
   button: {
-    margin: '1rem 0 1rem 1rem',
+    margin: '1rem',
+    padding: 0,
+    border: '1px solid #ddd',
+  },
+  counter: {
+    margin: '1rem 0',
+    padding: 0,
+    lineHeight: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   cardFooter: {
     display: 'grid',
@@ -62,6 +75,12 @@ const styles = {
     after: {
       content: 'sas',
     }
+  },
+  btnHolder: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 'auto',
+    marginRight: 0,
   },
 };
 
@@ -142,17 +161,25 @@ class HomeComponent extends React.Component {
                   </Typography>
                 </strike>
               </Typography>
-              <Button
-                size="small"
-                variant="outlined"
-                className={classes.button}
-                onClick={this.handleCartChanges}
-                data-id={menuItem.id}
-                data-price={menuItem.price}
-                data-name={menuItem.localName}
-              >
-                Add
-              </Button>
+              <div className={classes.btnHolder}>
+                <IconButton color="primary" className={classes.button} aria-label="Add to shopping cart">
+                  <RemoveIcon />
+                </IconButton>
+                <div className={classes.counter}>
+                  0
+                </div>
+                <IconButton
+                  color="primary"
+                  className={classes.button}
+                  aria-label="Add to shopping cart"
+                  onClick={this.handleCartChanges}
+                  data-id={menuItem.id}
+                  data-price={menuItem.price}
+                  data-name={menuItem.localName}
+                >
+                  <AddIcon />
+                </IconButton>
+              </div>
             </CardActions>
           </Card>
         </Zoom>

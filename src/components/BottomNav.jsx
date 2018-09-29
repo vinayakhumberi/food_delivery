@@ -15,7 +15,12 @@ const styles = {
     width: '100%',
     position: 'fixed',
     bottom: 0,
-  },
+	},
+	badge: {
+		backgroundColor: '#8bc34a',
+		color: "#ffffff",
+		fontWeight: '500',
+	}
 };
 
 const selectNav = (path) => {
@@ -88,7 +93,7 @@ class BottomNav extends React.Component {
 	          />
 						<BottomNavigationAction
 							label="Cart"
-							icon={<Badge badgeContent={cartCount} color="success" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge>}
+							icon={cartCount ? <Badge badgeContent={cartCount} color="success" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge> : <ShoppingCartIcon />}
 							onClick={() => {
 								this.props.history.push('/cart');
 							}}
