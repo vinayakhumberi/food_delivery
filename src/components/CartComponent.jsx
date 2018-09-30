@@ -20,8 +20,11 @@ const styles = theme => ({
   },
   pageTitle: {
     fontSize: '1.05rem',
-    colo: '#888888',
-    padding: '0 1rem',
+    color: '#888888',
+    padding: '0 0.5rem',
+  },
+  content: {
+    padding: '0 0.5rem',
   },
   body: {
     backgroundColor: '#F5F5F5',
@@ -87,7 +90,7 @@ class CartComponent extends React.Component {
           <Typography className={classes.pageTitle} gutterBottom variant="headline" component="h1">
             Cart Summary:
           </Typography>
-          <div>
+          <div className={classes.content}>
           <Paper className={classes.root} elevation={0}>
             <Table className={classes.table}>
               <TableHead>

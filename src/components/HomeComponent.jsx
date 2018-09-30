@@ -26,12 +26,13 @@ const styles = {
   },
   pageTitle: {
     fontSize: '1.05rem',
-    colo: '#888888',
-    padding: '0 1rem',
+    color: '#888888',
+    padding: '0 0.5rem',
   },
   card: {
     maxWidth: '100%',
     margin: '10px',
+    border: '1px solid #ddd',
   },
   cardTitle: {
     fontSize: '1.25rem',
@@ -181,7 +182,7 @@ class HomeComponent extends React.Component {
     const buildMenuCards = (menu) => {
       const crudeHtml = menu.map((menuItem) => {
         return (
-          <Card key={menuItem.id} className={`${classes.card} ${menuItem.available ? '' : classes.disable}`}>
+          <Card key={menuItem.id} className={`${classes.card} ${menuItem.available ? '' : classes.disable}`} elevation={0}>
             {Object.keys(menuItem.tags).length && <div className={
                 `${classes.tag}   ${menuItem.tags.promo === 'Exclusive' && classes.green} ${menuItem.tags.promo === 'Select' && classes.black}`
               }
@@ -251,7 +252,7 @@ class HomeComponent extends React.Component {
       const crudeHtml = [0, 1].map((item) => {
         return (
           <Zoom in={this.state.show} key={item}>
-            <Card className={`${classes.card}`}>
+            <Card className={`${classes.card}`} elevation={0}>
               {fakeImage}
               <CardContent>
                 <Typography className={classes.cardTitle} gutterBottom variant="headline" component="h2">
