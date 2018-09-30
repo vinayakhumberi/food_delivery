@@ -93,7 +93,7 @@ class BottomNav extends React.Component {
 	          />
 						<BottomNavigationAction
 							label="Cart"
-							icon={cartCount ? <Badge badgeContent={cartCount} color="success" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge> : <ShoppingCartIcon />}
+							icon={cartCount ? <Badge badgeContent={cartCount} color="primary" classes={{ badge: classes.badge }}><ShoppingCartIcon /></Badge> : <ShoppingCartIcon />}
 							onClick={() => {
 								this.props.history.push('/cart');
 							}}

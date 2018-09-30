@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,15 +11,23 @@ import Zoom from '@material-ui/core/Zoom';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
+import grey from '@material-ui/core/colors/grey';
 
 const styles = {
   body: {
     backgroundColor: '#F5F5F5',
     minHeight: '100vh',
-    padding: '25% 0.5rem',
+    padding: '5rem 0.5rem',
+  },
+  content: {
     display: 'grid',
     gridTemplateColumns: '1fr',
     gridGap: '1rem',
+  },
+  pageTitle: {
+    fontSize: '1.05rem',
+    colo: '#888888',
+    padding: '0 1rem',
   },
   card: {
     maxWidth: '100%',
@@ -82,6 +89,32 @@ const styles = {
     margin: 'auto',
     marginRight: 0,
   },
+  fake: {
+    backgroundColor: grey[200],
+    height: '1rem',
+    margin: '0.25rem',
+    // Selects every two elements among any group of siblings.
+    // '&:nth-child(2n)': {
+    //   marginRight: '3rem',
+    // },
+  },
+  fakeImage: {
+    backgroundColor: grey[200],
+    height: '10rem',
+  },
+  fakeCounters: {
+    fill: 'currentColor',
+    width: '1.5rem',
+    height: '1.5rem',
+    display: 'inline-block',
+    fontSize: '24px',
+    transition: 'fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    userSelect: 'none',
+    flexShrink: '0',
+    borderRadius: '50%',
+    background: grey[200],
+    margin: '1rem',
+  }
 };
 
 class HomeComponent extends React.Component {
@@ -99,40 +132,56 @@ class HomeComponent extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps.cart);
-  }
   handleCartChanges(event) {
-    const foodId = event.currentTarget.getAttribute('data-id');
-    const foodName = event.currentTarget.getAttribute('data-name');
-    const itemPrice = parseInt(event.currentTarget.getAttribute('data-price'), 10);
-    const cart = this.props.cart.slice(0);
-    const cartItem = _.find(cart, ['foodId', foodId]);
-    if (cartItem) {
-      _.forEach(cart, function(item) {
-        if (item.foodId === foodId) {
-          item.quantity = item.quantity + 1;
-          item.price = item.quantity * itemPrice;
+    const available = parseInt(event.currentTarget.getAttribute('data-available'), 10);
+    if (available) {
+      const type = event.currentTarget.getAttribute('data-type');
+      const foodId = event.currentTarget.getAttribute('data-id');
+      const foodName = event.currentTarget.getAttribute('data-name');
+      const itemPrice = parseInt(event.currentTarget.getAttribute('data-price'), 10);
+      const cart = this.props.cart.slice(0);
+      const cartItem = _.find(cart, ['foodId', foodId]);
+      if (type === 'add') {
+        if (cartItem) {
+          _.forEach(cart, function(item) {
+            if (item.foodId === foodId) {
+              item.quantity = item.quantity + 1;
+              item.price = item.quantity * itemPrice;
+            }
+          });
+        } else {
+          cart.push({
+            foodId,
+            foodName,
+            quantity: 1,
+            price: itemPrice,
+          });
         }
-      });
-    } else {
-      cart.push({
-        foodId,
-        foodName,
-        quantity: 1,
-        price: itemPrice,
-      });
+      } else {
+        if (cartItem) {
+          _.forEach(cart, function(item) {
+            if (item.foodId === foodId) {
+              item.quantity = item.quantity - 1;
+              item.price = item.quantity * itemPrice;
+            }
+          });
+        }
+        _.remove(cart, {
+          quantity: 0,
+        });
+      }
+      this.props.updateCart(cart);
     }
-    this.props.updateCart(cart);
   }
   render() {
     const { classes } = this.props;
-    // console.log(this.props);
+    const fake = <div className={classes.fake} />;
+    const fakeImage = <div className={classes.fakeImage} />;
+    const fakeCounters = <div className={classes.fakeCounters} />;
     const buildMenuCards = (menu) => {
       const crudeHtml = menu.map((menuItem) => {
         return (
-          <Zoom in={this.state.show} key={menuItem.id}>
-          <Card className={`${classes.card} ${menuItem.available ? '' : classes.disable}`}>
+          <Card key={menuItem.id} className={`${classes.card} ${menuItem.available ? '' : classes.disable}`}>
             {Object.keys(menuItem.tags).length && <div className={
                 `${classes.tag}   ${menuItem.tags.promo === 'Exclusive' && classes.green} ${menuItem.tags.promo === 'Select' && classes.black}`
               }
@@ -153,7 +202,7 @@ class HomeComponent extends React.Component {
               </Typography>
             </CardContent>
             <CardActions className={classes.cardFooter}>
-              <Typography color="primary" component="p">
+              <Typography color="primary" component="div">
                 ₹ {menuItem.price}
                 <strike>
                   <Typography variant="caption" gutterBottom align="left">
@@ -162,7 +211,17 @@ class HomeComponent extends React.Component {
                 </strike>
               </Typography>
               <div className={classes.btnHolder}>
-                <IconButton color="primary" className={classes.button} aria-label="Add to shopping cart">
+                <IconButton
+                  color="primary"
+                  className={classes.button}
+                  aria-label="Add to shopping cart"
+                  onClick={this.handleCartChanges}
+                  data-id={menuItem.id}
+                  data-price={menuItem.price}
+                  data-name={menuItem.localName}
+                  data-available={menuItem.available}
+                  data-type="remove"
+                >
                   <RemoveIcon />
                 </IconButton>
                 <div className={classes.counter}>
@@ -176,22 +235,63 @@ class HomeComponent extends React.Component {
                   data-id={menuItem.id}
                   data-price={menuItem.price}
                   data-name={menuItem.localName}
+                  data-available={menuItem.available}
+                  data-type="add"
                 >
                   <AddIcon />
                 </IconButton>
               </div>
             </CardActions>
           </Card>
-        </Zoom>
         );
       });
       return crudeHtml;
     }
-    const cards = this.props.menuItems.status === 2 ? buildMenuCards(this.props.menuItems.data) : null;
+    const buildMenuSkeletalCards = () => {
+      const crudeHtml = [0, 1].map((item) => {
+        return (
+          <Zoom in={this.state.show} key={item}>
+            <Card className={`${classes.card}`}>
+              {fakeImage}
+              <CardContent>
+                <Typography className={classes.cardTitle} gutterBottom variant="headline" component="h2">
+                  {fake}
+                </Typography>
+                <Typography variant="caption" gutterBottom align="left">
+                  {fake}
+                </Typography>
+              </CardContent>
+              <CardActions className={classes.cardFooter}>
+                <Typography color="primary" component="div">
+                  {fake}
+                  <strike>
+                    <Typography variant="caption" gutterBottom align="left">
+                      {fake}
+                    </Typography>
+                  </strike>
+                </Typography>
+                <div className={classes.btnHolder}>
+                  {fakeCounters}
+                  {fake}
+                  {fakeCounters}
+                </div>
+              </CardActions>
+            </Card>
+          </Zoom>
+        );
+      });
+      return crudeHtml;
+    }
+    const cards = this.props.menuItems.status === 2 ? buildMenuCards(this.props.menuItems.data) : buildMenuSkeletalCards();
     return (
       <div className={classes.root}>
         <div className={classes.body}>
-          {cards}
+          <Typography className={classes.pageTitle} gutterBottom variant="headline" component="h1">
+            Choose from our amzing text to impress customer
+          </Typography>
+          <div className={classes.content}>
+            {cards}
+          </div>
         </div>
       </div>
     );
