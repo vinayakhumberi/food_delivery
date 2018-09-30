@@ -75,7 +75,7 @@ class BottomNav extends React.Component {
 	          value={this.state.selected}
 	          onChange={this.handleChange}
 	          showLabels
-	          className={classes.stickToBottom}
+						className={classes.stickToBottom}
 	        >
 	          <BottomNavigationAction
 	          	label="Exclusive"

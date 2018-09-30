@@ -10,8 +10,6 @@ import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   body: {
-    backgroundColor: '#F5F5F5',
-    minHeight: '100vh',
     padding: '25% 0.5rem',
   },
   pageTitle: {

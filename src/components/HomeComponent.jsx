@@ -15,8 +15,6 @@ import grey from '@material-ui/core/colors/grey';
 
 const styles = {
   body: {
-    backgroundColor: '#F5F5F5',
-    minHeight: '100vh',
     padding: '5rem 0.5rem',
   },
   content: {

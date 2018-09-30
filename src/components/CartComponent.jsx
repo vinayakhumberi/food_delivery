@@ -27,8 +27,6 @@ const styles = theme => ({
     padding: '0 0.5rem',
   },
   body: {
-    backgroundColor: '#F5F5F5',
-    minHeight: '100vh',
     padding: '25% 0.5rem',
   },
   cell: {
