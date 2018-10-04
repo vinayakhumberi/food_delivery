@@ -5,3 +5,4 @@ firebase.initializeApp(FirebaseConfig);
 
 const databaseRef = firebase.database().ref();
 export const menuRef = databaseRef.child("menu");
+export const taxesRef = databaseRef.child("taxes");

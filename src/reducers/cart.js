@@ -1,6 +1,11 @@
-import { UPDATE_CART, EMPTY_CART } from '../constants/ActionTypes';
+import { UPDATE_CART, EMPTY_CART, FETCH_TAXES, FETCH_TAXES_SUCCESS } from '../constants/ActionTypes';
 const initialState = {
-  cart: []
+  cart: [],
+  taxesAndDiscounts: {
+    status: 0,
+    messages: '',
+    data: {},
+  }
 };
 
 export default function (state = initialState, action) {
@@ -14,6 +19,24 @@ export default function (state = initialState, action) {
       return {
         ...state,
         cart: [],
+      };
+    case FETCH_TAXES:
+      return {
+        ...state,
+        taxesAndDiscounts: {
+          status: 1,
+          messages: 'requesting...',
+          data: {},
+        }
+      };
+    case FETCH_TAXES_SUCCESS:
+      return {
+        ...state,
+        taxesAndDiscounts: {
+          status: 2,
+          messages: 'success',
+          data: action.payload,
+        }
       };
     default:
       return state;

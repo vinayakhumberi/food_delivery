@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -40,8 +41,12 @@ class NavBar extends React.Component {
       openDrawer: false,
     };
   }
+  componentWillMount() {
+    this.props.fetchTaxesAndDiscounts();
+  }
 	render() {
 		const { classes } = this.props;
+    console.log(this.props.taxesAndDiscounts);
 		return(
       <div>
         <AppBar position="fixed" color={'primary'}>
@@ -95,4 +100,9 @@ class NavBar extends React.Component {
 	}
 }
 
+NavBar.propTypes = {
+  classes: PropTypes.object.isRequired,
+  fetchTaxesAndDiscounts: PropTypes.func.isRequired,
+  taxesAndDiscounts: PropTypes.shape().isRequired,
+};
 export default withStyles(styles)(NavBar);
