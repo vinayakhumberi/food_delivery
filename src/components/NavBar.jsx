@@ -46,7 +46,6 @@ class NavBar extends React.Component {
   }
 	render() {
 		const { classes } = this.props;
-    console.log(this.props.taxesAndDiscounts);
 		return(
       <div>
         <AppBar position="fixed" color={'primary'}>
@@ -103,6 +102,5 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
   fetchTaxesAndDiscounts: PropTypes.func.isRequired,
-  taxesAndDiscounts: PropTypes.shape().isRequired,
 };
 export default withStyles(styles)(NavBar);

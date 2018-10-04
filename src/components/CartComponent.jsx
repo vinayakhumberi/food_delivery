@@ -74,6 +74,7 @@ class CartComponent extends React.Component {
     const cartTotal = _.reduce(this.props.cart, (sum, item) => {
 			return sum + (item.price || 0);
 		}, 0);
+    console.log(this.props.taxesAndDiscounts);
     return(
       <div className={classes.body}>
         {cartTotal === 0 ? <div className={classes.emptyCart}>
@@ -166,7 +167,22 @@ class CartComponent extends React.Component {
   }
 }
 
+// loop start---
+//   <type === flat>
+//     $value = value
+//   </type>
+//   <type === variable>
+//     $value = calculate value using totalPayableAmt
+//   </type>
+//   <calc === add>
+//     $finalPayable = calculate based on addition
+//   </calc>
+//   <calc === subtract>
+//     $finalPayable = calculate based on subtraction
+//   </calc>
+// loop end ---
 CartComponent.propTypes = {
   classes: PropTypes.object.isRequired,
+  taxesAndDiscounts: PropTypes.shape().isRequired,
 };
 export default withStyles(styles)(CartComponent);
