@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { calculateTaxesAndDiscount } from '../utils/TaxesAndDiscount';
 
 const styles = theme => ({
   root: {
@@ -70,11 +71,40 @@ class CartComponent extends React.Component {
     });
   };
   render () {
-    const { classes } = this.props;
+    const { classes, taxesAndDiscounts } = this.props;
+    let taxAndDis = null;
     const cartTotal = _.reduce(this.props.cart, (sum, item) => {
 			return sum + (item.price || 0);
 		}, 0);
-    console.log(this.props.taxesAndDiscounts);
+    console.log(taxesAndDiscounts);
+    if (this.props.taxesAndDiscounts.status === 2) {
+      taxAndDis = calculateTaxesAndDiscount(this.props.taxesAndDiscounts.data, cartTotal);
+    }
+    const taxesHtml = taxAndDis && taxAndDis.taxes.map((tax) => 
+      (
+        <TableRow key={tax.id}>
+          <TableCell component="th" scope="row">
+            {tax.waive ? <strike>{tax.name}</strike> : tax.name}
+          </TableCell>
+          <TableCell numeric>
+            Rs. {tax.waive ? <strike>{tax.calPrice || tax.value}</strike> : tax.calPrice || tax.value}
+          </TableCell>
+        </TableRow>
+      )
+    );
+    const serviceChargeHtml = taxAndDis && taxAndDis.service_charge.map((tax) =>
+      (
+        <TableRow key={tax.id}>
+          <TableCell component="th" scope="row">
+            {tax.waive ? <strike>{tax.name}</strike> : tax.name}
+          </TableCell>
+          <TableCell numeric>
+            Rs. {tax.waive ? <strike>{tax.calPrice || tax.value}</strike> : tax.calPrice || tax.value}
+          </TableCell>
+        </TableRow>
+      )
+    );
+    console.log(taxAndDis);
     return(
       <div className={classes.body}>
         {cartTotal === 0 ? <div className={classes.emptyCart}>
@@ -116,18 +146,8 @@ class CartComponent extends React.Component {
           </Paper>
             <Table className={classes.table}>
               <TableBody>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    CGST
-                  </TableCell>
-                  <TableCell numeric>Rs. 20</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell component="th" scope="row">
-                    SGST
-                  </TableCell>
-                  <TableCell numeric>Rs. 20</TableCell>
-                </TableRow>
+                  {taxesHtml}
+                  {serviceChargeHtml}
               </TableBody>
             </Table>
           <Paper className={classes.root}>
@@ -137,7 +157,7 @@ class CartComponent extends React.Component {
                   <TableCell component="th" scope="row">
                     TOTAL
                   </TableCell>
-                  <TableCell numeric>Rs. {cartTotal}</TableCell>
+                      <TableCell numeric>Rs. {taxAndDis && taxAndDis.finalPayable}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -167,20 +187,6 @@ class CartComponent extends React.Component {
   }
 }
 
-// loop start---
-//   <type === flat>
-//     $value = value
-//   </type>
-//   <type === variable>
-//     $value = calculate value using totalPayableAmt
-//   </type>
-//   <calc === add>
-//     $finalPayable = calculate based on addition
-//   </calc>
-//   <calc === subtract>
-//     $finalPayable = calculate based on subtraction
-//   </calc>
-// loop end ---
 CartComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   taxesAndDiscounts: PropTypes.shape().isRequired,
