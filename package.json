@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "cp ./.env.local .env && react-scripts start",
-    "build": "react-scripts build",
+    "build": "cp ./.env.local .env && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
