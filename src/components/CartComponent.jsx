@@ -76,7 +76,6 @@ class CartComponent extends React.Component {
     const cartTotal = _.reduce(this.props.cart, (sum, item) => {
 			return sum + (item.price || 0);
 		}, 0);
-    console.log(taxesAndDiscounts);
     if (this.props.taxesAndDiscounts.status === 2) {
       taxAndDis = calculateTaxesAndDiscount(this.props.taxesAndDiscounts.data, cartTotal);
     }
@@ -87,7 +86,7 @@ class CartComponent extends React.Component {
             {tax.waive ? <strike>{tax.name}</strike> : tax.name}
           </TableCell>
           <TableCell numeric>
-            Rs. {tax.waive ? <strike>{tax.calPrice || tax.value}</strike> : tax.calPrice || tax.value}
+            ₹ {tax.waive ? <strike>{tax.calPrice || tax.value}</strike> : tax.calPrice || tax.value}
           </TableCell>
         </TableRow>
       )
@@ -99,12 +98,11 @@ class CartComponent extends React.Component {
             {tax.waive ? <strike>{tax.name}</strike> : tax.name}
           </TableCell>
           <TableCell numeric>
-            Rs. {tax.waive ? <strike>{tax.calPrice || tax.value}</strike> : tax.calPrice || tax.value}
+            ₹ {tax.waive ? <strike>{tax.calPrice || tax.value}</strike> : tax.calPrice || tax.value}
           </TableCell>
         </TableRow>
       )
     );
-    console.log(taxAndDis);
     return(
       <div className={classes.body}>
         {cartTotal === 0 ? <div className={classes.emptyCart}>
@@ -157,7 +155,7 @@ class CartComponent extends React.Component {
                   <TableCell component="th" scope="row">
                     TOTAL
                   </TableCell>
-                      <TableCell numeric>Rs. {taxAndDis && taxAndDis.finalPayable}</TableCell>
+                      <TableCell numeric>₹ {taxAndDis && taxAndDis.finalPayable}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

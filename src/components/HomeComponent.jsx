@@ -121,7 +121,6 @@ class HomeComponent extends React.Component {
     super();
     this.state = {
       show: true,
-      handBag: [],
     };
     this.handleCartChanges = this.handleCartChanges.bind(this);
   }
@@ -140,6 +139,7 @@ class HomeComponent extends React.Component {
       const itemPrice = parseInt(event.currentTarget.getAttribute('data-price'), 10);
       const cart = this.props.cart.slice(0);
       const cartItem = _.find(cart, ['foodId', foodId]);
+      let handBag = this.props.handBag;
       if (type === 'add') {
         if (cartItem) {
           _.forEach(cart, function(item) {
@@ -156,6 +156,7 @@ class HomeComponent extends React.Component {
             price: itemPrice,
           });
         }
+        handBag.push(foodId);
       } else {
         if (cartItem) {
           _.forEach(cart, function(item) {
@@ -168,12 +169,18 @@ class HomeComponent extends React.Component {
         _.remove(cart, {
           quantity: 0,
         });
+        const index = this.props.handBag.indexOf(foodId);
+        if (index > -1) {
+          handBag.splice(index, 1);
+        }
       }
+      this.props.updateHandBag(handBag);
       this.props.updateCart(cart);
     }
   }
   render() {
     const { classes } = this.props;
+    const handBag = _.countBy(this.props.handBag);
     const fake = <div className={classes.fake} />;
     const fakeImage = <div className={classes.fakeImage} />;
     const fakeCounters = <div className={classes.fakeCounters} />;
@@ -224,7 +231,7 @@ class HomeComponent extends React.Component {
                   <RemoveIcon />
                 </IconButton>
                 <div className={classes.counter}>
-                  0
+                  {handBag[menuItem.id] || 0}
                 </div>
                 <IconButton
                   color="primary"
@@ -303,6 +310,8 @@ HomeComponent.propTypes = {
   menuItems: PropTypes.shape().isRequired,
   updateCart: PropTypes.func.isRequired,
   cart: PropTypes.array.isRequired,
+  updateHandBag: PropTypes.func.isRequired,
+  handBag: PropTypes.array.isRequired,
 };
 
 export default withStyles(styles)(HomeComponent);

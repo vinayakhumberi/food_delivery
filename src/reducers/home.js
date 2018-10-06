@@ -1,4 +1,4 @@
-import { FETCH_MENU, FETCH_MENU_SUCCESS } from '../constants/ActionTypes';
+import { FETCH_MENU, FETCH_MENU_SUCCESS, UPDATE_HANDBAG } from '../constants/ActionTypes';
 // import { menuRef } from "../config/firebase";
 
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
     messages: '',
     data: {},
   },
+  handBag: [],
 };
 
 export default function (state = initialState, action) {
@@ -28,6 +29,11 @@ export default function (state = initialState, action) {
           messages: 'success',
           data: action.payload,
         },
+      };
+    case UPDATE_HANDBAG:
+      return {
+        ...state,
+        handBag: action.payload,
       };
     default:
       return state;

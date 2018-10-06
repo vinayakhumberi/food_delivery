@@ -1,4 +1,4 @@
-export const calculateAmountFromPercentage = (amount, percentage) => (percentage * amount) / 100;
+export const calculateAmountFromPercentage = (amount, percentage) => Math.round(percentage * amount) / 100;
 
 export const formatRupees = number => {
   if (!isNaN(number)) {

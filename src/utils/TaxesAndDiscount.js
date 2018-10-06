@@ -28,7 +28,7 @@ export const calculateFinalPrice = (data, cartPrice) => {
     const waivePrice = n.waive ? 0 : (n.calPrice || n.value);
     return sum + waivePrice;
   }, 0);
-  return cartPrice + addValue - substractValue;
+  return Math.ceil(cartPrice + addValue - substractValue);
 };
 export default {
   calculateTaxesAndDiscount,
