@@ -7,6 +7,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   body: {
@@ -29,6 +30,10 @@ const styles = theme => ({
     fontSize: '0.8rem',
     color: '#888888',
   },
+  button: {
+    width: '100%',
+    margin: '1rem 0',
+  },
 });
 class AccountComponent extends React.Component {
   constructor(props) {
@@ -37,6 +42,7 @@ class AccountComponent extends React.Component {
       expanded: null,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleProfileSave = this.handleProfileSave.bind(this);
   }
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -47,6 +53,21 @@ class AccountComponent extends React.Component {
       expanded: this.state.expanded !== panel ? panel : false,
     });
   };
+  handleProfileSave() {
+    const params = {
+      id: '9591608975',
+      name: 'Vinayak',
+      location: '',
+      mobile: '9591608975',
+      mobileVerified: 0,
+      email: 'vinay.humberi@gmail.com',
+      emailVerified: 0,
+      addressLine1: '#138, Madhura chetana colony',
+      addressLine2: 'Kusugal Road',
+      city: 'Hubli',
+    };
+    this.props.setUserInfo(params);
+  }
   render () {
     const { classes } = this.props;
     return(
@@ -56,7 +77,7 @@ class AccountComponent extends React.Component {
         </Typography>
         <div className={classes.content}>
           <ExpansionPanel
-            expanded={this.state.expanded === 'panel1'}
+            expanded={this.state.expanded === 'panel1' || this.state.expanded === null}
             onChange={this.handleChange}
             data-panel="panel1"
             elevation={0}
@@ -79,7 +100,7 @@ class AccountComponent extends React.Component {
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
-            expanded={this.state.expanded === 'panel2'}
+            expanded={this.state.expanded === 'panel2' || this.state.expanded === null}
             onChange={this.handleChange}
             data-panel="panel2"
             elevation={0}
@@ -105,7 +126,7 @@ class AccountComponent extends React.Component {
             </ExpansionPanelDetails>
           </ExpansionPanel>
           <ExpansionPanel
-            expanded={this.state.expanded === 'panel3'}
+            expanded={this.state.expanded === 'panel3' || this.state.expanded === null}
             onChange={this.handleChange}
             data-panel="panel3"
             elevation={0}
@@ -129,6 +150,9 @@ class AccountComponent extends React.Component {
               />
             </ExpansionPanelDetails>
           </ExpansionPanel>
+          <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleProfileSave}>
+            Save
+          </Button>
         </div>
       </div>
     );
@@ -137,5 +161,6 @@ class AccountComponent extends React.Component {
 
 AccountComponent.propTypes = {
   classes: PropTypes.object.isRequired,
+  setUserInfo: PropTypes.func.isRequired,
 };
 export default withStyles(styles)(AccountComponent);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { find, forEach, remove, countBy } from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -24,7 +24,7 @@ const styles = {
   },
   pageTitle: {
     fontSize: '1.05rem',
-    color: '#888888',
+    color: '#222222',
     padding: '0 0.5rem',
   },
   card: {
@@ -138,11 +138,11 @@ class HomeComponent extends React.Component {
       const foodName = event.currentTarget.getAttribute('data-name');
       const itemPrice = parseInt(event.currentTarget.getAttribute('data-price'), 10);
       const cart = this.props.cart.slice(0);
-      const cartItem = _.find(cart, ['foodId', foodId]);
+      const cartItem = find(cart, ['foodId', foodId]);
       let handBag = this.props.handBag;
       if (type === 'add') {
         if (cartItem) {
-          _.forEach(cart, function(item) {
+          forEach(cart, function(item) {
             if (item.foodId === foodId) {
               item.quantity = item.quantity + 1;
               item.price = item.quantity * itemPrice;
@@ -159,14 +159,14 @@ class HomeComponent extends React.Component {
         handBag.push(foodId);
       } else {
         if (cartItem) {
-          _.forEach(cart, function(item) {
+          forEach(cart, function(item) {
             if (item.foodId === foodId) {
               item.quantity = item.quantity - 1;
               item.price = item.quantity * itemPrice;
             }
           });
         }
-        _.remove(cart, {
+        remove(cart, {
           quantity: 0,
         });
         const index = this.props.handBag.indexOf(foodId);
@@ -180,7 +180,7 @@ class HomeComponent extends React.Component {
   }
   render() {
     const { classes } = this.props;
-    const handBag = _.countBy(this.props.handBag);
+    const handBag = countBy(this.props.handBag);
     const fake = <div className={classes.fake} />;
     const fakeImage = <div className={classes.fakeImage} />;
     const fakeCounters = <div className={classes.fakeCounters} />;

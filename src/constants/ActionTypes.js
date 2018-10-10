@@ -5,4 +5,6 @@ export const UPDATE_CART = 'UPDATE_CART';
 export const EMPTY_CART = 'EMPTY_CART';
 export const FETCH_TAXES = 'FETCH_TAXES';
 export const FETCH_TAXES_SUCCESS = 'FETCH_TAXES_SUCCESS';
+export const SET_USER_INFO = 'SET_USER_INFO';
+export const SET_USER_INFO_SUCCESS = 'SET_USER_INFO_SUCCESS';
 export const UPDATE_HANDBAG = 'UPDATE_HANDBAG';

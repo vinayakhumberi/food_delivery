@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import AccountComponent from '../components/AccountComponent';
 import { fetchMenu } from '../actions/HomeActions';
 import { fetchTaxesAndDiscounts } from '../actions/CartActions';
+import { setUserInfo } from '../actions/AccountActions';
 import BottomNav from '../components/BottomNav';
 import NavBar from '../components/NavBar';
 
@@ -27,4 +28,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   fetchMenu,
 	fetchTaxesAndDiscounts,
+	setUserInfo,
 })(AccountContainer);

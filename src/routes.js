@@ -8,14 +8,14 @@ export default () => {
  return (
    <BrowserRouter>
    	<div>
-   <Switch>
-   <Route exact path='/' component={HomeContainer}/>
-   <Route path='/home' component={HomeContainer}/>
-   <Route path='/cart' component={CartContainer}/>
-   <Route path='/account' component={AccountContainer}/>
-   <Route path='/exclusive' component={HomeContainer}/>
-   </Switch>
-	</div>
+     <Switch>
+       <Route exact path='/' component={HomeContainer}/>
+       <Route path='/home' component={HomeContainer}/>
+       <Route path='/cart' component={CartContainer}/>
+       <Route path='/account' component={AccountContainer}/>
+       <Route path='/exclusive' component={HomeContainer}/>
+       </Switch>
+  	</div>
    </BrowserRouter>
  )
 }

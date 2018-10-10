@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { reduce } from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -73,13 +73,13 @@ class CartComponent extends React.Component {
   render () {
     const { classes, taxesAndDiscounts } = this.props;
     let taxAndDis = null;
-    const cartTotal = _.reduce(this.props.cart, (sum, item) => {
+    const cartTotal = reduce(this.props.cart, (sum, item) => {
 			return sum + (item.price || 0);
 		}, 0);
     if (this.props.taxesAndDiscounts.status === 2) {
       taxAndDis = calculateTaxesAndDiscount(this.props.taxesAndDiscounts.data, cartTotal);
     }
-    const taxesHtml = taxAndDis && taxAndDis.taxes.map((tax) => 
+    const taxesHtml = taxAndDis && taxAndDis.taxes.map((tax) =>
       (
         <TableRow key={tax.id}>
           <TableCell component="th" scope="row">
