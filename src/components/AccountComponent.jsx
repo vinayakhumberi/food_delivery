@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import PhoneReg from './PhoneReg';
 
 const styles = theme => ({
   body: {
@@ -40,9 +36,11 @@ class AccountComponent extends React.Component {
     super(props);
     this.state = {
       expanded: null,
+      openPhoneReg: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleProfileSave = this.handleProfileSave.bind(this);
+    this.togglePhoneRegDrawer = this.togglePhoneRegDrawer.bind(this);
   }
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -68,6 +66,11 @@ class AccountComponent extends React.Component {
     };
     this.props.setUserInfo(params);
   }
+  togglePhoneRegDrawer() {
+    this.setState({
+      openPhoneReg: !this.state.openPhoneReg,
+    });
+  }
   render () {
     const { classes } = this.props;
     return(
@@ -76,83 +79,24 @@ class AccountComponent extends React.Component {
           Your Profile:    
         </Typography>
         <div className={classes.content}>
-          <ExpansionPanel
-            expanded={this.state.expanded === 'panel1' || this.state.expanded === null}
-            onChange={this.handleChange}
-            data-panel="panel1"
-            elevation={0}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Name</Typography>
-              <Typography className={classes.secondaryHeading}>Bob Dylan</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <TextField
-                id="outlined-name"
-                label="Name"
-                className={classes.textField}
-                value={this.state.name}
-                onChange={this.handleNameChange}
-                margin="normal"
-                variant="outlined"
-                fullWidth
-              />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-            expanded={this.state.expanded === 'panel2' || this.state.expanded === null}
-            onChange={this.handleChange}
-            data-panel="panel2"
-            elevation={0}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Phone no.</Typography>
-              <Typography className={classes.secondaryHeading}>
-                9591608973
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <TextField
-                id="outlined-name"
-                label="Mobile no."
-                type="tel"
-                className={classes.textField}
-                value={this.state.name}
-                onChange={this.handleNameChange}
-                margin="normal"
-                variant="outlined"
-                fullWidth
-              />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
-            expanded={this.state.expanded === 'panel3' || this.state.expanded === null}
-            onChange={this.handleChange}
-            data-panel="panel3"
-            elevation={0}
-          >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Address</Typography>
-              <Typography className={classes.secondaryHeading}>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl...
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <TextField
-                id="outlined-name"
-                label="Address"
-                className={classes.textField}
-                value={this.state.name}
-                onChange={this.handleNameChange}
-                margin="normal"
-                variant="outlined"
-                fullWidth
-              />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleProfileSave}>
-            Save
+          <div>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.button}
+              onClick={()=>{
+                this.setState({
+                  openPhoneReg: !this.state.openPhoneReg,
+                });
+              }}
+            >
+              Phone Reg
           </Button>
+          </div>
+          <PhoneReg
+            togglePhoneRegDrawer={this.togglePhoneRegDrawer}
+            openPhoneReg={this.state.openPhoneReg}
+          />
         </div>
       </div>
     );

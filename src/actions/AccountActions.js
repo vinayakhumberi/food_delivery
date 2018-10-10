@@ -1,4 +1,4 @@
-import { userRef } from "../config/firebase";
+// import { userRef } from "../config/firebase";
 import { SET_USER_INFO, SET_USER_INFO_SUCCESS } from '../constants/ActionTypes';
 
 export const setUserInfo = params => (dispatch) => {
