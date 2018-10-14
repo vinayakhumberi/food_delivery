@@ -37,6 +37,7 @@ class AccountComponent extends React.Component {
     this.state = {
       expanded: null,
       openPhoneReg: false,
+      openAddresEdit: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleProfileSave = this.handleProfileSave.bind(this);
@@ -91,6 +92,20 @@ class AccountComponent extends React.Component {
               }}
             >
               Phone Reg
+          </Button>
+          </div>
+          <div>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.button}
+              onClick={() => {
+                this.setState({
+                  openAddresEdit: !this.state.openAddresEdit,
+                });
+              }}
+            >
+              Address Edit
           </Button>
           </div>
           <PhoneReg

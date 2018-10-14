@@ -63,18 +63,34 @@ class PhoneReg extends React.Component {
           }}
         >
           <div className={classes.capsule}>
-            <Typography className={classes.cardTitle} gutterBottom variant="headline" component="h6">
-              Where can we call you?
-            </Typography>
-            <TextField
-              id="outlined-number"
-              label="Mobile"
-              onChange={this.handleChange}
-              type="phno"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-            />
+            {this.state.activeStep === 0 && <div className={'slide-1'}>
+              <Typography className={classes.cardTitle} variant="body2" gutterBottom>
+                Where can we call you?
+              </Typography>
+              <TextField
+                id="outlined-number"
+                label="Mobile"
+                onChange={this.handleChange}
+                type="phno"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+              />
+            </div>}
+            {this.state.activeStep === 1 && <div className={'slide-2'}>
+              <Typography className={classes.cardTitle} variant="body2" gutterBottom>
+                Enter the otp:
+              </Typography>
+              <TextField
+                id="outlined-number"
+                label="OTP"
+                onChange={this.handleChange}
+                type="phno"
+                className={classes.textField}
+                margin="normal"
+                variant="outlined"
+              />
+            </div>}
           </div>
           <MobileStepper
             steps={2}
