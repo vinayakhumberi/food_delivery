@@ -9,6 +9,9 @@ const propTypes = {
   openPhoneReg: PropTypes.bool.isRequired,
   togglePhoneRegDrawer: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  handleProfileSave: PropTypes.func.isRequired,
+  checkUserPresent: PropTypes.func.isRequired,
+  isUserPresent: PropTypes.object.isRequired,
 };
 
 const styles = theme => ({
@@ -36,14 +39,37 @@ class PhoneReg extends React.Component {
     super();
     this.state = {
       activeStep: 0,
+      mobile: '',
+      otp: '',
     };
     this.handleNext = this.handleNext.bind(this);
     this.handleBack = this.handleBack.bind(this);
   }
   handleNext() {
-    this.setState(prevState => ({
-      activeStep: prevState.activeStep + 1,
-    }));
+    if (this.state.activeStep < 1) {
+      this.setState(prevState => ({
+        activeStep: prevState.activeStep + 1,
+      }));
+      this.props.checkUserPresent(this.state.mobile);
+    } else if (this.state.activeStep === 1) {
+      //check if otp is correct
+      if (this.state.otp === '1234') {
+        // create a new user
+        if (this.props.isUserPresent.status === 2 && !this.props.isUserPresent.data) {
+          const params = {
+            mobile: this.state.mobile,
+            otp: this.state.otp,
+          };
+          this.props.handleProfileSave(params);
+          console.log('created');
+        } else {
+          console.log('login');
+          // login
+        }
+      } else { 
+        // invalid otp
+      }
+    }
   };
 
   handleBack() {
@@ -70,7 +96,11 @@ class PhoneReg extends React.Component {
               <TextField
                 id="outlined-number"
                 label="Mobile"
-                onChange={this.handleChange}
+                onChange={(e) => {
+                  const mobile = e.target.value;
+                  this.setState({ mobile });
+                }}
+                value={this.state.mobile}
                 type="phno"
                 className={classes.textField}
                 margin="normal"
@@ -84,7 +114,11 @@ class PhoneReg extends React.Component {
               <TextField
                 id="outlined-number"
                 label="OTP"
-                onChange={this.handleChange}
+                onChange={(e) => {
+                  const otp = e.target.value;
+                  this.setState({ otp });
+                }}
+                value={this.state.otp}
                 type="phno"
                 className={classes.textField}
                 margin="normal"

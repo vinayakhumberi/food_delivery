@@ -52,20 +52,13 @@ class AccountComponent extends React.Component {
       expanded: this.state.expanded !== panel ? panel : false,
     });
   };
-  handleProfileSave() {
+  handleProfileSave(param) {
     const params = {
-      id: '9591608975',
-      name: 'Vinayak',
-      location: '',
-      mobile: '9591608975',
-      mobileVerified: 0,
-      email: 'vinay.humberi@gmail.com',
-      emailVerified: 0,
-      addressLine1: '#138, Madhura chetana colony',
-      addressLine2: 'Kusugal Road',
-      city: 'Hubli',
+      id: param.mobile,
+      mobile: param.mobile,
+      otp: param.otp,
     };
-    this.props.setUserInfo(params);
+    this.props.createNewUser(params);
   }
   togglePhoneRegDrawer() {
     this.setState({
@@ -111,6 +104,9 @@ class AccountComponent extends React.Component {
           <PhoneReg
             togglePhoneRegDrawer={this.togglePhoneRegDrawer}
             openPhoneReg={this.state.openPhoneReg}
+            handleProfileSave={this.handleProfileSave}
+            checkUserPresent={this.props.checkUserPresent}
+            isUserPresent={this.props.isUserPresent}
           />
         </div>
       </div>
@@ -120,6 +116,17 @@ class AccountComponent extends React.Component {
 
 AccountComponent.propTypes = {
   classes: PropTypes.object.isRequired,
-  setUserInfo: PropTypes.func.isRequired,
+  createNewUser: PropTypes.func.isRequired,
+  checkUserPresent: PropTypes.func.isRequired,
+  isUserPresent: PropTypes.object.isRequired,
 };
 export default withStyles(styles)(AccountComponent);
+
+// name: 'Vinayak',
+//   location: '',
+//       mobileVerified: 0,
+//         email: 'vinay.humberi@gmail.com',
+//           emailVerified: 0,
+//             addressLine1: '#138, Madhura chetana colony',
+//               addressLine2: 'Kusugal Road',
+//                 city: 'Hubli',

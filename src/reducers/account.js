@@ -1,10 +1,21 @@
-import { SET_USER_INFO, SET_USER_INFO_SUCCESS } from '../constants/ActionTypes';
+import {
+  SET_USER_INFO,
+  SET_USER_INFO_SUCCESS,
+  CHECK_USER_EXIST,
+  CHECK_USER_EXIST_SUCCESS,
+  CHECK_USER_EXIST_ERROR,
+} from '../constants/ActionTypes';
 
 const initialState = {
   userInfo: {
     status: 0,
     messages: '',
     data: {},
+  },
+  isUserPresent: {
+    status: 0,
+    messages: '',
+    data: false,
   },
 };
 
@@ -26,6 +37,33 @@ export default function (state = initialState, action) {
           status: 2,
           messages: 'success',
           data: action.payload,
+        },
+      };
+    case CHECK_USER_EXIST:
+      return {
+        ...state,
+        isUserPresent: {
+          status: 1,
+          messages: 'requesting',
+          data: false,
+        },
+      };
+    case CHECK_USER_EXIST_SUCCESS:
+      return {
+        ...state,
+        isUserPresent: {
+          status: 2,
+          messages: 'success',
+          data: action.payload ? true : false,
+        },
+      };
+    case CHECK_USER_EXIST_ERROR:
+      return {
+        ...state,
+        isUserPresent: {
+          status: 3,
+          messages: action.payload.code,
+          data: false,
         },
       };
     default:
