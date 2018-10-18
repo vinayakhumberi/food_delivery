@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Drawer, MobileStepper, Button, TextField, Typography } from '@material-ui/core';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import { PHONE_REGEX } from '../config/constants.js';
+import { throws } from 'assert';
 
 const propTypes = {
   openPhoneReg: PropTypes.bool.isRequired,
@@ -32,6 +34,13 @@ const styles = theme => ({
   textField: {
     width: '100%',
   },
+  error: {
+    color: 'red',
+  },
+  loginImg: {
+    width: '74%',
+    margin: '0 13%'
+  }
 });
 
 class PhoneReg extends React.Component {
@@ -41,16 +50,24 @@ class PhoneReg extends React.Component {
       activeStep: 0,
       mobile: '',
       otp: '',
+      error: '',
     };
     this.handleNext = this.handleNext.bind(this);
     this.handleBack = this.handleBack.bind(this);
   }
   handleNext() {
-    if (this.state.activeStep < 1) {
-      this.setState(prevState => ({
-        activeStep: prevState.activeStep + 1,
-      }));
-      this.props.checkUserPresent(this.state.mobile);
+    if (this.state.activeStep < 1) { 
+      if (this.state.mobile.length === 10) {
+        this.setState(prevState => ({
+          activeStep: prevState.activeStep + 1,
+          error: '',
+        }));
+        this.props.checkUserPresent(this.state.mobile);
+      } else {
+        this.setState({
+          error: 'Please enter your number'
+        });
+      }
     } else if (this.state.activeStep === 1) {
       //check if otp is correct
       if (this.state.otp === '1234') {
@@ -66,8 +83,10 @@ class PhoneReg extends React.Component {
           console.log('login');
           // login
         }
-      } else { 
-        // invalid otp
+      } else {
+        this.setState({
+          error: 'Incorrect Otp'
+        });
       }
     }
   };
@@ -75,6 +94,7 @@ class PhoneReg extends React.Component {
   handleBack() {
     this.setState(prevState => ({
       activeStep: prevState.activeStep - 1,
+      error: '',
     }));
   };
   render() {
@@ -98,7 +118,12 @@ class PhoneReg extends React.Component {
                 label="Mobile"
                 onChange={(e) => {
                   const mobile = e.target.value;
-                  this.setState({ mobile });
+                  if (PHONE_REGEX.test(mobile)){
+                    this.setState({
+                      mobile,
+                      error: '',
+                    });
+                  }
                 }}
                 value={this.state.mobile}
                 type="phno"
@@ -116,7 +141,12 @@ class PhoneReg extends React.Component {
                 label="OTP"
                 onChange={(e) => {
                   const otp = e.target.value;
-                  this.setState({ otp });
+                  if (otp.length <= 4) {
+                    this.setState({
+                      otp,
+                      error: ''
+                    });
+                  }
                 }}
                 value={this.state.otp}
                 type="phno"
@@ -125,6 +155,10 @@ class PhoneReg extends React.Component {
                 variant="outlined"
               />
             </div>}
+            <Typography className={classes.error} variant="caption" gutterBottom>
+              {this.state.error || <br />}
+            </Typography>
+            <img className={classes.loginImg} src="/img/login.jpg" alt="login" />
           </div>
           <MobileStepper
             steps={2}
