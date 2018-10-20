@@ -15,7 +15,7 @@ const initialState = {
   isUserPresent: {
     status: 0,
     messages: '',
-    data: false,
+    data: {},
   },
 };
 
@@ -54,7 +54,7 @@ export default function (state = initialState, action) {
         isUserPresent: {
           status: 2,
           messages: 'success',
-          data: action.payload ? true : false,
+          data: action.payload || {},
         },
       };
     case CHECK_USER_EXIST_ERROR:

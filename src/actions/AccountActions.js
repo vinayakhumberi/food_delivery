@@ -13,7 +13,9 @@ export const createNewUser = params => (dispatch) => {
   });
   const postParams = {};
   postParams[params.mobile] = params;
-  userRef.update(postParams);
+  if (params.newLogin) {
+    userRef.update(postParams);
+  }
   dispatch({
     type: SET_USER_INFO_SUCCESS,
     payload: params,

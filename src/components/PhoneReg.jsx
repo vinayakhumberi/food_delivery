@@ -71,18 +71,13 @@ class PhoneReg extends React.Component {
     } else if (this.state.activeStep === 1) {
       //check if otp is correct
       if (this.state.otp === '1234') {
-        // create a new user
-        if (this.props.isUserPresent.status === 2 && !this.props.isUserPresent.data) {
-          const params = {
-            mobile: this.state.mobile,
-            otp: this.state.otp,
-          };
-          this.props.handleProfileSave(params);
-          console.log('created');
-        } else {
-          console.log('login');
-          // login
-        }
+        // create a new userand log in
+        let params = Object.assign({}, this.props.isUserPresent.data);
+        params.mobile = this.state.mobile;
+        params.otp = this.state.otp;
+        params.newLogin = this.props.isUserPresent.status === 2 && Object.keys(this.props.isUserPresent.data).length === 0;
+        this.props.handleProfileSave(params);
+        console.log('login');
       } else {
         this.setState({
           error: 'Incorrect Otp'

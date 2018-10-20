@@ -52,12 +52,7 @@ class AccountComponent extends React.Component {
       expanded: this.state.expanded !== panel ? panel : false,
     });
   };
-  handleProfileSave(param) {
-    const params = {
-      id: param.mobile,
-      mobile: param.mobile,
-      otp: param.otp,
-    };
+  handleProfileSave(params) {
     this.props.createNewUser(params);
   }
   togglePhoneRegDrawer() {
