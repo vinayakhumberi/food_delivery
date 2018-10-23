@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PhoneReg from './PhoneReg';
+import CreateIcon from '@material-ui/icons/Create';
 
 const styles = theme => ({
   body: {
@@ -29,6 +30,12 @@ const styles = theme => ({
   button: {
     width: '100%',
     margin: '1rem 0',
+    display: 'flex',
+    justifyContent: 'space-between',
+    border: 'none',
+    color: '#222',
+    borderBottom: '1px solid #aaa',
+    borderRadius: '0',
   },
 });
 class AccountComponent extends React.Component {
@@ -78,8 +85,14 @@ class AccountComponent extends React.Component {
                   openPhoneReg: !this.state.openPhoneReg,
                 });
               }}
+              justify="space-between"
             >
-              Phone Reg
+              <div>
+                {this.props.userInfo.data && this.props.userInfo.data.mobile ? this.props.userInfo.data.mobile :  'Phone Reg'}
+              </div>
+              <div>
+                <CreateIcon />
+              </div>
           </Button>
           </div>
           <div>
@@ -93,7 +106,12 @@ class AccountComponent extends React.Component {
                 });
               }}
             >
-              Address Edit
+              <div>
+                Add address
+              </div>
+              <div>
+                <CreateIcon />
+              </div>
           </Button>
           </div>
           <PhoneReg
@@ -102,6 +120,7 @@ class AccountComponent extends React.Component {
             handleProfileSave={this.handleProfileSave}
             checkUserPresent={this.props.checkUserPresent}
             isUserPresent={this.props.isUserPresent}
+            userInfo={this.props.userInfo}
           />
         </div>
       </div>
@@ -114,6 +133,7 @@ AccountComponent.propTypes = {
   createNewUser: PropTypes.func.isRequired,
   checkUserPresent: PropTypes.func.isRequired,
   isUserPresent: PropTypes.object.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
 export default withStyles(styles)(AccountComponent);
 

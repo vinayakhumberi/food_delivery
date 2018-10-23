@@ -14,6 +14,7 @@ const propTypes = {
   handleProfileSave: PropTypes.func.isRequired,
   checkUserPresent: PropTypes.func.isRequired,
   isUserPresent: PropTypes.object.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
 
 const styles = theme => ({
@@ -44,9 +45,11 @@ const styles = theme => ({
 });
 
 class PhoneReg extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      openPhoneReg: props.openPhoneReg,
+      userInfo: props.userInfo,
       activeStep: 0,
       mobile: '',
       otp: '',
@@ -54,6 +57,15 @@ class PhoneReg extends React.Component {
     };
     this.handleNext = this.handleNext.bind(this);
     this.handleBack = this.handleBack.bind(this);
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.userInfo.status === 2 && nextProps.userInfo.status !== prevState.userInfo.status) {
+      return { openPhoneReg: false, userInfo: nextProps.userInfo };
+    }
+    if (nextProps.openPhoneReg !== prevState.openPhoneReg) {
+      return { openPhoneReg: nextProps.openPhoneReg }
+    }
+    else return null;
   }
   handleNext() {
     if (this.state.activeStep < 1) { 
@@ -98,7 +110,7 @@ class PhoneReg extends React.Component {
       <div>
         <Drawer
           anchor="bottom"
-          open={this.props.openPhoneReg}
+          open={this.state.openPhoneReg}
           onClose={() => {
             this.props.togglePhoneRegDrawer('bottom', false)
           }}

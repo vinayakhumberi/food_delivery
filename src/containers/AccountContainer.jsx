@@ -22,6 +22,7 @@ const mapStateToProps = state => ({
 	cart: state.cart.cart,
 	taxesAndDiscounts: state.cart.taxesAndDiscounts,
 	isUserPresent: state.account.isUserPresent,
+	userInfo: state.account.userInfo,
 });
 
 
