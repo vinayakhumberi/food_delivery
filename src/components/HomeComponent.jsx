@@ -78,8 +78,9 @@ const styles = {
   },
   disable: {
     opacity: 0.6,
-    after: {
-      content: 'sas',
+    '&::before': {
+      content: 'aajnskansknka',
+      opacity: 1,
     }
   },
   btnHolder: {

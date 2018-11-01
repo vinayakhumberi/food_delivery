@@ -13,7 +13,8 @@ export const createNewUser = params => (dispatch) => {
   });
   const postParams = {};
   postParams[params.mobile] = params;
-  if (params.newLogin) {
+  if (params.newLogin || params.addressUpdate) {
+    delete postParams["addressUpdate"];
     userRef.update(postParams);
   }
   dispatch({

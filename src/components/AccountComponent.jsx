@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PhoneReg from './PhoneReg';
+import AddressUpdate from './AddressUpdate';
 import CreateIcon from '@material-ui/icons/Create';
 
 const styles = theme => ({
@@ -44,11 +45,12 @@ class AccountComponent extends React.Component {
     this.state = {
       expanded: null,
       openPhoneReg: false,
-      openAddresEdit: false,
+      openAddressUpdate: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleProfileSave = this.handleProfileSave.bind(this);
     this.togglePhoneRegDrawer = this.togglePhoneRegDrawer.bind(this);
+    this.toggleAddressUpdateDrawer = this.toggleAddressUpdateDrawer.bind(this);
   }
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -65,6 +67,11 @@ class AccountComponent extends React.Component {
   togglePhoneRegDrawer() {
     this.setState({
       openPhoneReg: !this.state.openPhoneReg,
+    });
+  }
+  toggleAddressUpdateDrawer() {
+    this.setState({
+      openAddressUpdate: !this.state.openAddressUpdate,
     });
   }
   render () {
@@ -100,11 +107,7 @@ class AccountComponent extends React.Component {
               variant="outlined"
               color="primary"
               className={classes.button}
-              onClick={() => {
-                this.setState({
-                  openAddresEdit: !this.state.openAddresEdit,
-                });
-              }}
+              onClick={this.toggleAddressUpdateDrawer}
             >
               <div>
                 Add address
@@ -121,6 +124,15 @@ class AccountComponent extends React.Component {
             checkUserPresent={this.props.checkUserPresent}
             isUserPresent={this.props.isUserPresent}
             userInfo={this.props.userInfo}
+          />
+          <AddressUpdate
+            toggleAddressUpdateDrawer={this.toggleAddressUpdateDrawer}
+            openAddressUpdate={this.state.openAddressUpdate}
+            handleProfileSave={this.handleProfileSave}
+            checkUserPresent={this.props.checkUserPresent}
+            isUserPresent={this.props.isUserPresent}
+            userInfo={this.props.userInfo}
+            addressUpdate={true}
           />
         </div>
       </div>
