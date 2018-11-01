@@ -20,6 +20,7 @@ const mapStateToProps = state => ({
 	menuItems: state.home.menuItems,
 	cart: state.cart.cart,
 	taxesAndDiscounts: state.cart.taxesAndDiscounts,
+	userInfo: state.account.userInfo
 });
 
 

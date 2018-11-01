@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { intersectionWith, isEqual } from 'lodash';
 import { reduce } from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -59,8 +60,26 @@ class CartComponent extends React.Component {
     super(props);
     this.state = {
       comments: '',
+      cartTotal: reduce(props.cart, (sum, item) => {
+        return sum + (item.price || 0);
+      }, 0),
+      cart: props.cart,
+      taxesAndDiscounts: props.taxesAndDiscounts,
+      taxAndDis: null,
+      userInfo: props.userInfo
     };
     this.handleCommentChange = this.handleCommentChange.bind(this);
+    this.placeOrder = this.placeOrder.bind(this);
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    var presents = intersectionWith(nextProps.cart, prevState.cart, isEqual);
+    if (presents.length.length !== 0) {
+      const cartTotal = reduce(nextProps.cart, (sum, item) => {
+        return sum + (item.price || 0);
+      }, 0);
+      return { cartTotal, taxAndDis: calculateTaxesAndDiscount(nextProps.taxesAndDiscounts.data, prevState.cartTotal) };
+    }
+    return null;
   }
   componentDidMount() {
     window.scrollTo(0, 0);
@@ -70,15 +89,27 @@ class CartComponent extends React.Component {
       comments: event.target.value,
     });
   };
+  placeOrder() {
+    const params = {
+      cart: this.state.cart,
+      taxesAndDiscounts: this.state.taxAndDis,
+      cartTotal: this.state.cartTotal,
+      finalPayable: this.state.taxAndDis.finalPayable,
+      comments: this.state.comments,
+      userInfo: this.state.userInfo.data
+    }
+    console.log('order', params);
+  }
   render () {
     const { classes, taxesAndDiscounts } = this.props;
-    let taxAndDis = null;
-    const cartTotal = reduce(this.props.cart, (sum, item) => {
-			return sum + (item.price || 0);
-		}, 0);
-    if (this.props.taxesAndDiscounts.status === 2) {
-      taxAndDis = calculateTaxesAndDiscount(this.props.taxesAndDiscounts.data, cartTotal);
-    }
+    // let taxAndDis = null;
+    // const cartTotal = reduce(this.props.cart, (sum, item) => {
+		// 	return sum + (item.price || 0);
+    // }, 0);
+    const { cartTotal, taxAndDis } = this.state;
+    // if (taxesAndDiscounts.status === 2) {
+    //   taxAndDis = calculateTaxesAndDiscount(taxesAndDiscounts.data, cartTotal);
+    // }
     const taxesHtml = taxAndDis && taxAndDis.taxes.map((tax) =>
       (
         <TableRow key={tax.id}>
@@ -175,7 +206,12 @@ class CartComponent extends React.Component {
             />
           </div>
           <div>
-            <Button variant="contained" color="primary" className={classes.button}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={this.placeOrder}
+            >
               Place order
             </Button>
           </div>
@@ -188,5 +224,6 @@ class CartComponent extends React.Component {
 CartComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   taxesAndDiscounts: PropTypes.shape().isRequired,
+  userInfo: PropTypes.object.isRequired
 };
 export default withStyles(styles)(CartComponent);

@@ -38,6 +38,9 @@ const styles = theme => ({
     borderBottom: '1px solid #aaa',
     borderRadius: '0',
   },
+  alignLeft: {
+    textAlign: 'left',
+  }
 });
 class AccountComponent extends React.Component {
   constructor(props) {
@@ -109,8 +112,10 @@ class AccountComponent extends React.Component {
               className={classes.button}
               onClick={this.toggleAddressUpdateDrawer}
             >
-              <div>
-                Add address
+              <div className={classes.alignLeft}>
+                {this.props.userInfo.data && this.props.userInfo.data.address1
+                  ? this.props.userInfo.data.address1 + ' ' + this.props.userInfo.data.address2 + ' ' + this.props.userInfo.data.address3
+                  : 'Add address'}
               </div>
               <div>
                 <CreateIcon />
