@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import CartComponent from '../components/CartComponent';
 import { fetchMenu } from '../actions/HomeActions';
-import { fetchTaxesAndDiscounts } from '../actions/CartActions';
+import { fetchTaxesAndDiscounts, placeAnOrder } from '../actions/CartActions';
 import BottomNav from '../components/BottomNav';
 import NavBar from '../components/NavBar';
 
@@ -26,6 +26,7 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps, {
-  fetchMenu,
+	fetchMenu,
+	placeAnOrder,
 	fetchTaxesAndDiscounts,
 })(CartContainer);

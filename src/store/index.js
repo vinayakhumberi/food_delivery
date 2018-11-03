@@ -6,6 +6,7 @@ import { manageSessions } from '../middlewares/localStorageMiddleware';
 
 const initialState = {};
 const middleware = [thunk, logger, manageSessions];
+// const middleware = [thunk, manageSessions];
 
 const store = createStore(
   rootReducer,

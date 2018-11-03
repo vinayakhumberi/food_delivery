@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { calculateTaxesAndDiscount } from '../utils/TaxesAndDiscount';
+import { formatDate } from '../utils/CommonUtils';
 
 const styles = theme => ({
   root: {
@@ -96,20 +97,14 @@ class CartComponent extends React.Component {
       cartTotal: this.state.cartTotal,
       finalPayable: this.state.taxAndDis.finalPayable,
       comments: this.state.comments,
-      userInfo: this.state.userInfo.data
+      orderDate: formatDate()
     }
-    console.log('order', params);
+    // console.log('order', params);
+    this.props.placeAnOrder(params, this.props.userInfo.data);
   }
   render () {
-    const { classes, taxesAndDiscounts } = this.props;
-    // let taxAndDis = null;
-    // const cartTotal = reduce(this.props.cart, (sum, item) => {
-		// 	return sum + (item.price || 0);
-    // }, 0);
+    const { classes } = this.props;
     const { cartTotal, taxAndDis } = this.state;
-    // if (taxesAndDiscounts.status === 2) {
-    //   taxAndDis = calculateTaxesAndDiscount(taxesAndDiscounts.data, cartTotal);
-    // }
     const taxesHtml = taxAndDis && taxAndDis.taxes.map((tax) =>
       (
         <TableRow key={tax.id}>
@@ -224,6 +219,7 @@ class CartComponent extends React.Component {
 CartComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   taxesAndDiscounts: PropTypes.shape().isRequired,
-  userInfo: PropTypes.object.isRequired
+  userInfo: PropTypes.object.isRequired,
+  placeAnOrder: PropTypes.func.isRequired
 };
 export default withStyles(styles)(CartComponent);

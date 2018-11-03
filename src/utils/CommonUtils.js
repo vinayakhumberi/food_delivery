@@ -27,9 +27,25 @@ export const scrollToId = (id, offsetTop) => {
     behavior: 'smooth',
   });
 };
+export const formatDate = (date) => {
+  let d = null;
+  if (date) {
+     d = new Date(date);
+  } else {
+    d = new Date();
+  }
+  let month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
 
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('_');
+};
 export default {
   calculateAmountFromPercentage,
   formatRupees,
+  formatDate,
   scrollToId,
 };

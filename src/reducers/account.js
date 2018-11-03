@@ -10,12 +10,12 @@ const initialState = {
   userInfo: {
     status: 0,
     messages: '',
-    data: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")).data : {},
+    data: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")).data : {}
   },
   isUserPresent: {
     status: 0,
     messages: '',
-    data: {},
+    data: {}
   },
 };
 
