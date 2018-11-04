@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { fetchOrders } from '../actions/OrderActions';
 import OrderComponent from '../components/OrderComponent';
 
 
@@ -11,11 +12,11 @@ const OrdersContainer = props => (
 
 
 const mapStateToProps = state => ({
-  menuItems: state.home.menuItems,
-  cart: state.cart.cart,
-  taxesAndDiscounts: state.cart.taxesAndDiscounts,
+  orderItems: state.orders.orderItems
 });
 
 
 
-export default connect(mapStateToProps, {})(OrdersContainer);
+export default connect(mapStateToProps, {
+  fetchOrders
+})(OrdersContainer);

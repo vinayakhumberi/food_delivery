@@ -13,7 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { calculateTaxesAndDiscount } from '../utils/TaxesAndDiscount';
-import { formatDate } from '../utils/CommonUtils';
+import { formatDate, getUniqueID } from '../utils/CommonUtils';
 
 const styles = theme => ({
   root: {
@@ -92,12 +92,14 @@ class CartComponent extends React.Component {
   };
   placeOrder() {
     const params = {
+      orderId: getUniqueID(),
       cart: this.state.cart,
       taxesAndDiscounts: this.state.taxAndDis,
       cartTotal: this.state.cartTotal,
       finalPayable: this.state.taxAndDis.finalPayable,
       comments: this.state.comments,
-      orderDate: formatDate()
+      orderDate: formatDate(),
+      status: "order_placed"
     }
     // console.log('order', params);
     this.props.placeAnOrder(params, this.props.userInfo.data);

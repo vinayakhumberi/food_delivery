@@ -41,11 +41,20 @@ export const formatDate = (date) => {
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
 
-  return [year, month, day].join('_');
+  return [year, month, day].join('-');
 };
+
+export const getUniqueID = () => {
+  const x = Date.now();
+  const y = parseInt(Math.random() * 1000, 10);
+  const z = new Date().toString().substring(0, 3).toLocaleUpperCase();
+  const z1 = (x.toString() + y.toString());
+  return z + z1.substring(z1.length - 10, z1.length);
+}
 export default {
   calculateAmountFromPercentage,
   formatRupees,
   formatDate,
   scrollToId,
+  getUniqueID,
 };
